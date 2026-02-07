@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 15px; background: #f4f6f8; color: #333; }
+        
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 25px; 
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        h1 { margin: 0; font-size: 1.5rem; color: #2c3e50; }
+        
+        .logout-btn {
+            color: #e74c3c; 
+            font-weight: bold; 
+            text-decoration: none; 
+            border: 1px solid #e74c3c; 
+            padding: 8px 15px; 
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover { background: #e74c3c; color: white; }
+
+        .container { 
+            background: white; 
+            padding: 20px; 
+            margin-bottom: 25px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+        }
+
+        h3 { margin-top: 0; color: #34495e; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; margin-bottom: 15px; }
+
+        /* --- TABLE STYLES --- */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #34495e; color: white; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; }
+        tr:hover { background-color: #f9f9f9; }
+
+        /* --- FORM ELEMENTS --- */
+        input[type="number"] { 
+            padding: 8px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            width: 100px;
+        }
+
+        button { 
+            cursor: pointer; 
+            padding: 8px 12px; 
+            border: none; 
+            color: white; 
+            border-radius: 4px; 
+            font-size: 13px; 
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+        button:hover { opacity: 0.9; }
+        
+        .approve { background: #27ae60; }
+        .reject { background: #c0392b; }
+        .update { background: #2980b9; }
+
+        /* --- MOBILE RESPONSIVE (CARD VIEW) --- */
+        @media (max-width: 768px) {
+            /* Hide Table Headers */
+            thead { display: none; }
+            
+            /* Make Rows Blocks */
+            table, tbody, tr, td { display: block; width: 100%; }
+            
+            tr {
+                margin-bottom: 15px;
+                background: #fff;
+                border: 1px solid #e1e1e1;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                padding: 5px;
+            }
+            
+            td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+                border-bottom: 1px solid #f0f0f0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            td:last-child { border-bottom: 0; }
+
+            /* Add Labels via CSS using data-label attribute */
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: #7f8c8d;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+            }
+
+            /* Adjust inputs and buttons for mobile touch */
+            input[type="number"] { width: 100px; padding: 10px; font-size: 16px; }
+            button { padding: 10px 15px; font-size: 14px; margin-left: 5px; }
+            
+            /* Specific fix for the Update Balance Form */
+            form { display: flex; align-items: center; justify-content: flex-end; gap: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Admin Panel</h1>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="container">
+        <h3>User Balances</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Current Balance</th>
+                    <th>Update Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(u => { %>
+                    <tr>
+                        <td data-label="Username"><strong><%= u.username %></strong></td>
+                        <td data-label="Balance">€<%= u.balance.toFixed(2) %></td>
+                        <td data-label="Update">
+                            <form action="/admin/balance" method="POST">
+                                <input type="hidden" name="userId" value="<%= u._id %>">
+                                <input type="number" name="newBalance" step="0.01" value="<%= u.balance %>">
+                                <button type="submit" class="update">Set</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h3>Withdrawal Requests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Amount</th>
+                    <th>VAT (2.5%)</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% transactions.forEach(tx => { %>
+                    <tr>
+                        <td data-label="User">
+                            <strong><%= tx.userId ? tx.userId.username : 'Deleted User' %></strong>
+                            <div style="font-size:0.8em; color:#888;"><%= tx.date.toLocaleDateString() %></div>
+                        </td>
+                        <td data-label="Amount" style="font-weight:bold;">€<%= tx.amount %></td>
+                        <td data-label="VAT" style="color:#c0392b;">€<%= tx.vatFee %></td>
+                        <td data-label="Status">
+                            <span style="
+                                padding: 4px 8px; 
+                                border-radius: 4px; 
+                                font-size: 0.85em;
+                                color: white;
+                                background-color: <%= tx.status === 'Approved' ? '#27ae60' : (tx.status === 'Pending' ? '#f39c12' : '#c0392b') %>;
+                            ">
+                                <%= tx.status %>
+                            </span>
+                        </td>
+                        <td data-label="Action">
+                            <% if (tx.status === 'Pending') { %>
+                                <form action="/admin/approve" method="POST">
+                                    <input type="hidden" name="txId" value="<%= tx._id %>">
+                                    <button type="submit" name="action" value="approve" class="approve">✔ Approve</button>
+                                    <button type="submit" name="action" value="reject" class="reject">✖ Reject</button>
+                                </form>
+                            <% } else { %>
+                                <span style="color:#95a5a6;">Locked</span>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
