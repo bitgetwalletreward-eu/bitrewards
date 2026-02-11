@@ -13,7 +13,7 @@ const TELEGRAM_USERNAME = "YOUR_TELEGRAM_ID";
 
 // Environment variables for Render deployment
 const MONGO_URI =
-  process.env.MONGO_URI || "mongodb://127.0.0.1:27017/bitrewards";
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/bitrewards";
 const PORT = process.env.PORT || 3000;
 
 // --- LOAD LANGUAGES ---
