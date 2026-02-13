@@ -307,7 +307,7 @@
     <!-- BALANCE -->
     <div class="balance-container">
         <div class="balance-label"><%= t.total_balance %></div>
-        <div class="total-balance">€<%= user.balance.toFixed(2) %></div>
+        <div class="total-balance">€<%= user.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></div>
         
         <!-- BUTTON: LINKS TO WITHDRAW -->
         <a href="/withdraw" class="withdraw-btn"><%= t.withdraw %></a>
@@ -323,9 +323,9 @@
             <div class="icon-circle"><i class='bx bx-down-arrow-alt'></i></div>
             <span><%= t.receive %></span>
         </a>
-        <a href="#history-start" class="action-item">
-            <div class="icon-circle"><i class='bx bx-time-five'></i></div>
-            <span><%= t.history %></span>
+        <a href="/about-us" class="action-item">
+            <div class="icon-circle"><i class='bx bx-info-circle'></i></div>
+            <span><%= t.about_us %></span>
         </a>
         <a href="/logout" class="action-item" style="color:red;">
             <div class="icon-circle" style="background:#fff0f0; color:red;"><i class='bx bx-log-out'></i></div>
@@ -405,7 +405,7 @@
                         </div>
                     </div>
                     <div class="tx-right">
-                        <span class="tx-amount">-€<%= tx.amount %></span>
+                        <span class="tx-amount">-€<%= tx.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
                         <span class="status-badge status-<%= tx.status %>">
                             <%= (tx.status === 'Approved' ? t.approved : (tx.status === 'Pending' ? t.pending : t.rejected)) %>
                         </span>
@@ -421,16 +421,16 @@
             <i class='bx bx-home-alt-2'></i>
             <%= t.nav_home %>
         </a>
-        <a href="#" class="nav-item">
+        <a href="/invest" class="nav-item">
             <i class='bx bx-bar-chart-alt-2'></i>
-            <%= t.nav_markets %>
+            <%= t.nav_invest %>
         </a>
         <a href="#" class="nav-center-btn">
             <i class='bx bx-transfer-alt'></i>
         </a>
-        <a href="#" class="nav-item">
+        <a href="/rewards" class="nav-item">
             <i class='bx bx-dollar-circle'></i>
-            <%= t.nav_pay %>
+            <%= t.nav_rewards %>
         </a>
         <a href="/dashboard" class="nav-item active">
             <i class='bx bx-wallet'></i>
@@ -438,18 +438,34 @@
         </a>
     </div>
 
-    <!-- Start of Tawk.to Script -->
-    <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/69871b456cb3b91c3a0e79d6/1jgrs52mu';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
-    </script>
+   
+    <!-- Floating Telegram Support Button -->
+    <a href="mailto:askforas9stance@gmail.com" class="support-fab" aria-label="Support via Email">
+        <i class='bx bx-envelope'></i>
+    </a>
+
+    <style>
+        .support-fab {
+            position: fixed;
+            right: 18px;
+            bottom: 78px; /* above bottom nav */
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #D44638; /* Gmail red */
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+            z-index: 200;
+            text-decoration: none;
+            transition: transform .12s ease-in-out;
+        }
+        .support-fab i { font-size: 24px; }
+        .support-fab:hover { transform: translateY(-4px); }
+    </style>
+
     <!-- End of Tawk.to Script -->
 
 </body>

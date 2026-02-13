@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= t.nav_invest %></title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+        padding-bottom: 90px;
+        color: #1a1a1a;
+      }
+
+      .top-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .avatar {
+        width: 35px;
+        height: 35px;
+        background: #40e0d0;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .top-icons {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .top-icons i {
+        font-size: 24px;
+        color: #40e0d0;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+
+      .top-icons i:hover {
+        color: #2dbaa8;
+      }
+
+      .content-container {
+        padding: 20px;
+      }
+
+      .section-header {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #1a1a1a;
+        text-align: center;
+      }
+
+      .section-subtitle {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 25px;
+        font-style: italic;
+      }
+
+      .intro-section {
+        background: white;
+        padding: 20px;
+        border-radius: 14px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        border-left: 4px solid #40e0d0;
+      }
+
+      .intro-section p {
+        font-size: 15px;
+        color: #555;
+        line-height: 1.8;
+      }
+
+      .plan-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-bottom: 25px;
+      }
+
+      .plan-card {
+        background: white;
+        padding: 25px;
+        border-radius: 14px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 2px solid transparent;
+        transition: all 0.3s;
+      }
+
+      .plan-card:hover {
+        border-color: #40e0d0;
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(64, 224, 208, 0.15);
+      }
+
+      .plan-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+
+      .plan-subtitle {
+        font-size: 13px;
+        color: #40e0d0;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .plan-description {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.7;
+        margin-bottom: 18px;
+      }
+
+      .plan-features {
+        list-style: none;
+        margin: 15px 0;
+      }
+
+      .plan-features li {
+        font-size: 14px;
+        color: #555;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .plan-features li:last-child {
+        border-bottom: none;
+      }
+
+      .plan-features li:before {
+        content: "✓";
+        color: #40e0d0;
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      .plan-returns {
+        background: linear-gradient(135deg, #f0fffe 0%, #e0f9f7 100%);
+        padding: 15px;
+        border-radius: 10px;
+        margin: 15px 0;
+        border: 2px solid #40e0d0;
+        text-align: center;
+      }
+
+      .returns-label {
+        font-size: 12px;
+        color: #666;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .returns-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #40e0d0;
+        margin: 0;
+      }
+
+      .returns-value small {
+        font-size: 14px;
+        color: #555;
+      }
+
+      .earning-period {
+        font-size: 13px;
+        color: #40e0d0;
+        font-weight: 600;
+        margin-top: 6px;
+      }
+
+      .profit-breakdown {
+        background: #f0fffe;
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 12px;
+        border-left: 3px solid #40e0d0;
+        font-size: 12px;
+      }
+
+      .profit-breakdown p {
+        margin: 6px 0;
+        color: #555;
+        line-height: 1.6;
+      }
+
+      .profit-breakdown strong {
+        color: #1a1a1a;
+      }
+
+      .profit-calc {
+        background: white;
+        padding: 8px 10px;
+        border-radius: 6px;
+        margin-top: 6px;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        color: #40e0d0;
+        border: 1px solid #e0f9f7;
+      }
+
+      .info-section {
+        background: white;
+        padding: 20px;
+        border-radius: 14px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        border-left: 4px solid #40e0d0;
+      }
+
+      .info-section h3 {
+        font-size: 18px;
+        color: #1a1a1a;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+      }
+
+      .info-section h3 i {
+        color: #40e0d0;
+        font-size: 24px;
+      }
+
+      .info-section p {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.8;
+        margin-bottom: 12px;
+      }
+
+      .info-section strong {
+        color: #1a1a1a;
+        font-weight: 600;
+      }
+
+      .highlight {
+        color: #40e0d0;
+        font-weight: 600;
+      }
+
+      .example-box {
+        background: #f9fafb;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 12px 0;
+        border-left: 3px solid #40e0d0;
+        font-size: 13px;
+        color: #555;
+      }
+
+      .withdrawal-note {
+        background: #fff8f0;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+        border-left: 3px solid #ff9800;
+        font-size: 13px;
+        color: #d84315;
+        font-weight: 600;
+      }
+
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: white;
+        display: flex;
+        justify-content: space-around;
+        padding: 12px 0;
+        border-top: 1px solid #eee;
+        z-index: 100;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .nav-item {
+        text-align: center;
+        color: #999;
+        font-size: 10px;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .nav-item:hover {
+        color: #40e0d0;
+      }
+
+      .nav-item i {
+        display: block;
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+      .nav-item.active {
+        color: #40e0d0;
+      }
+
+      .nav-center-btn {
+        background: #40e0d0;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: -15px;
+        box-shadow: 0 4px 15px rgba(64, 224, 208, 0.3);
+        color: #004d40;
+        transition: transform 0.3s;
+      }
+
+      .nav-center-btn:hover {
+        transform: scale(1.1);
+      }
+
+      /* --- LANGUAGE SWITCHER --- */
+      .lang-menu {
+        position: relative;
+        display: inline-block;
+      }
+      .lang-btn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #40e0d0;
+        transition: color 0.3s;
+      }
+      .lang-btn:hover {
+        color: #2dbaa8;
+      }
+      .lang-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: white;
+        min-width: 120px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .lang-dropdown a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        text-align: left;
+      }
+      .lang-dropdown a:hover {
+        background-color: #f1f1f1;
+      }
+      .lang-menu:hover .lang-dropdown {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div class="top-nav">
+      <div class="user-profile">
+        <div class="avatar"><i class="bx bxs-user-circle"></i></div>
+        <span><%= user.username %></span>
+      </div>
+      <div class="top-icons">
+        <i class="bx bx-arrow-back"></i>
+        <!-- LANG SWITCHER -->
+        <div class="lang-menu">
+          <button class="lang-btn"><i class="bx bx-globe"></i></button>
+          <div class="lang-dropdown">
+            <a href="/set-lang/en">🇺🇸 English</a>
+            <a href="/set-lang/cs">🇨🇿 Čeština</a>
+            <a href="/set-lang/hr">🇭🇷 Hrvatski</a>
+            <a href="/set-lang/hu">🇭🇺 Magyar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-container">
+      <div class="section-header"><%= t.investment_plans %></div>
+      <div class="section-subtitle"><%= t.choose_plan %></div>
+
+      <!-- INTRO SECTION -->
+      <div class="intro-section">
+        <p>
+          The
+          <span class="highlight"
+            >initial stake acquisition must meet the specified minimum
+            amount</span
+          >
+          provided. The returns plan is divided into two categories, each
+          offering distinct advantages tailored to different investment
+          preferences and risk profiles.
+        </p>
+      </div>
+
+      <!-- INVESTMENT PLANS -->
+      <div class="plan-container">
+        <!-- FLEXIBLE RETURNS PLAN -->
+        <div class="plan-card">
+          <div class="plan-title">
+            <i
+              class="bx bxs-right-arrow-circle"
+              style="color: #40e0d0; margin-right: 8px"
+            ></i
+            ><%= t.flexible_returns %>
+          </div>
+          <div class="plan-subtitle"><%= t.minimum_plan %></div>
+          <div class="plan-description"><%= t.plan_description_flex %></div>
+
+          <div class="plan-returns">
+            <div class="returns-label"><%= t.potential_returns %></div>
+            <div class="returns-value">19/100% <small>PR</small></div>
+            <div class="earning-period"><%= t.earns_daily %></div>
+            <div class="profit-breakdown">
+              <p>
+                <strong
+                  ><%= t.example_with_deposit %> €50 <%= t.minimum_deposit
+                  %>:</strong
+                >
+              </p>
+              <p>Daily profit up to: €950</p>
+            </div>
+          </div>
+
+          <ul class="plan-features">
+            <li>
+              <span class="highlight"><%= t.minimum_deposit %></span> 50€
+              <div class="profit-calc"><%= t.totaling %> €1,000</div>
+            </li>
+            <li>
+              <span class="highlight"><%= t.maximum_deposit %></span> 5,000€
+              <div class="profit-calc"><%= t.totaling %> €100,000</div>
+            </li>
+            <li>
+              <span class="highlight">Withdrawal:</span> <%=
+              t.withdrawal_anytime %>
+            </li>
+            <li>
+              <span class="highlight">Rewards:</span> <%= t.rewards_yes %>
+            </li>
+          </ul>
+        </div>
+
+        <!-- FIXED RETURNS PLAN -->
+        <div class="plan-card">
+          <div class="plan-title">
+            <i
+              class="bx bxs-right-arrow-circle"
+              style="color: #40e0d0; margin-right: 8px"
+            ></i
+            ><%= t.fixed_returns %>
+          </div>
+          <div class="plan-subtitle"><%= t.steady_growth %></div>
+          <div class="plan-description"><%= t.plan_description_fixed %></div>
+
+          <div class="plan-returns">
+            <div class="returns-label"><%= t.potential_returns %></div>
+            <div class="returns-value">19/100% <small>PR</small></div>
+            <div class="earning-period"><%= t.earns_weekly %></div>
+            <div class="profit-breakdown">
+              <p>
+                <strong
+                  ><%= t.example_with_deposit %> €2,500 <%= t.minimum_deposit
+                  %>:</strong
+                >
+              </p>
+              <p>Weekly profit: €47,500</p>
+            </div>
+          </div>
+
+          <ul class="plan-features">
+            <li>
+              <span class="highlight"><%= t.minimum_deposit %></span> 50€
+              <div class="profit-calc"><%= t.totaling %> €1,000</div>
+            </li>
+            <li>
+              <span class="highlight"><%= t.maximum_deposit %></span> 50,000€
+              <div class="profit-calc"><%= t.totaling %> €1000,000</div>
+            </li>
+            <li>
+              <span class="highlight">Withdrawal:</span> <%= t.withdrawal_weekly
+              %>
+            </li>
+            <li>
+              <span class="highlight">Rewards:</span> <%= t.rewards_yes %> +
+              Loyalty Rewards
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- EARNINGS TIMELINE SECTION -->
+      <div class="info-section">
+        <h3><i class="bx bx-time-five"></i><%= t.when_earnings %></h3>
+
+        <p style="margin-top: 15px; font-weight: 600; color: #1a1a1a">
+          <%= t.flex_returns_label %>
+        </p>
+        <p><%= t.exchange_transmission %> <%= t.interest_distributed %></p>
+        <div class="example-box">
+          <strong>Example:</strong> <%= t.deposit_date %> November 10 at 5:00 PM
+          (UTC+8), <%= t.interest_credited %> November 11 at 6:00 PM (UTC+8).
+        </div>
+
+        <p style="margin-top: 15px; font-weight: 600; color: #1a1a1a">
+          <%= t.fixed_returns_label %>
+        </p>
+        <p>
+          For investors in the fixed returns plan, you will receive <%=
+          t.consistent_payouts %>. <%= t.free_airdrop %>
+        </p>
+        <div class="example-box">
+          <strong>Example:</strong> If you deposit on October 12, Bitget will
+          credit the interest to your account before 6:00 PM (UTC+8) on October
+          18. Subsequent weekly payouts will follow according to the settlement
+          schedule.
+        </div>
+      </div>
+
+      <!-- WITHDRAWAL SECTION -->
+      <div class="info-section">
+        <h3><i class="bx bx-wallet"></i><%= t.when_withdraw %></h3>
+
+        <p style="margin-top: 15px; font-weight: 600; color: #1a1a1a">
+          <%= t.flex_returns_label %>
+        </p>
+        <p><%= t.withdraw_2_hours %></p>
+
+        <p style="margin-top: 15px; font-weight: 600; color: #1a1a1a">
+          <%= t.fixed_returns_label %>
+        </p>
+        <p><%= t.withdraw_2_days %></p>
+
+        <div class="withdrawal-note">
+          <%= t.withdrawal_note %> <%= t.manage_funds %>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <a href="/dashboard" class="nav-item">
+        <i class="bx bx-home-alt-2"></i>
+        <%= t.nav_home %>
+      </a>
+      <a href="/invest" class="nav-item active">
+        <i class="bx bx-bar-chart-alt-2"></i>
+        <%= t.nav_invest %>
+      </a>
+      <a href="#" class="nav-center-btn">
+        <i class="bx bx-transfer-alt"></i>
+      </a>
+      <a href="/rewards" class="nav-item">
+        <i class="bx bx-dollar-circle"></i>
+        <%= t.nav_rewards %>
+      </a>
+      <a href="/dashboard" class="nav-item">
+        <i class="bx bx-wallet"></i>
+        <%= t.nav_wallet %>
+      </a>
+    </div>
+  </body>
+</html>

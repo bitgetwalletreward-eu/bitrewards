@@ -45,6 +45,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// expose telegram username to all views for support link
+app.use((req, res, next) => {
+  res.locals.telegramUser = TELEGRAM_USERNAME;
+  next();
+});
+
 // --- DATABASE CONNECTION ---
 mongoose
   .connect(MONGO_URI)
@@ -95,9 +101,11 @@ seedAdmin();
 app.get("/set-lang/:code", (req, res) => {
   const code = req.params.code;
   if (["en", "cs", "hr", "hu"].includes(code)) {
-    res.cookie("lang", code, { maxAge: 90000000 });
+    res.cookie("lang", code, { maxAge: 900000000, path: "/" });
   }
-  res.redirect("back");
+  // Get the referring URL, fallback to dashboard
+  const referrer = req.get("referer") || "/dashboard";
+  res.redirect(referrer);
 });
 
 // Auth Routes
@@ -148,6 +156,24 @@ app.get("/dashboard", requireLogin, async (req, res) => {
     date: -1,
   });
   res.render("dashboard", { user, transactions });
+});
+
+// Invest Page
+app.get("/invest", requireLogin, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.render("invest", { user });
+});
+
+// Rewards Page
+app.get("/rewards", requireLogin, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.render("rewards", { user });
+});
+
+// About Us Page
+app.get("/about-us", requireLogin, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  res.render("about-us", { user });
 });
 
 // Withdrawal Process

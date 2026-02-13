@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= t.nav_rewards %></title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        padding-bottom: 90px;
+        color: #111;
+      }
+
+      .top-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        background: #fff;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .avatar {
+        width: 35px;
+        height: 35px;
+        background: #6c5ce7;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .top-icons {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .top-icons i {
+        font-size: 24px;
+        color: #333;
+      }
+
+      .content-container {
+        padding: 20px;
+      }
+
+      .section-header {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .rewards-card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .reward-info h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+        color: #111;
+      }
+      .reward-info p {
+        font-size: 13px;
+        color: #666;
+      }
+
+      .reward-amount {
+        font-size: 20px;
+        font-weight: bold;
+        color: #40e0d0;
+      }
+
+      .claim-btn {
+        background-color: #40e0d0;
+        color: #004d40;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 13px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(64, 224, 208, 0.3);
+      }
+
+      .claim-btn:hover {
+        background-color: #2cc4b3;
+      }
+      .claim-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* --- LANGUAGE SWITCHER --- */
+      .lang-menu {
+        position: relative;
+        display: inline-block;
+      }
+      .lang-btn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #333;
+        transition: color 0.3s;
+      }
+      .lang-btn:hover {
+        color: #40e0d0;
+      }
+      .lang-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: white;
+        min-width: 120px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .lang-dropdown a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        text-align: left;
+      }
+      .lang-dropdown a:hover {
+        background-color: #f1f1f1;
+      }
+      .lang-menu:hover .lang-dropdown {
+        display: block;
+      }
+
+      .stats-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .stat-box {
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 5px;
+      }
+      .stat-value {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: white;
+        display: flex;
+        justify-content: space-around;
+        padding: 12px 0;
+        border-top: 1px solid #eee;
+        z-index: 100;
+      }
+
+      .nav-item {
+        text-align: center;
+        color: #999;
+        font-size: 10px;
+        text-decoration: none;
+      }
+
+      .nav-item i {
+        display: block;
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+      .nav-item.active {
+        color: #000;
+      }
+
+      .nav-center-btn {
+        background: #40e0d0;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: -15px;
+        box-shadow: 0 4px 10px rgba(64, 224, 208, 0.4);
+        color: #004d40;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div class="top-nav">
+      <div class="user-profile">
+        <div class="avatar"><i class="bx bxs-user-circle"></i></div>
+        <span><%= user.username %></span>
+      </div>
+      <div class="top-icons">
+        <i class="bx bx-arrow-back"></i>
+        <!-- LANG SWITCHER -->
+        <div class="lang-menu">
+          <button class="lang-btn"><i class="bx bx-globe"></i></button>
+          <div class="lang-dropdown">
+            <a href="/set-lang/en">🇺🇸 English</a>
+            <a href="/set-lang/cs">🇨🇿 Čeština</a>
+            <a href="/set-lang/hr">🇭🇷 Hrvatski</a>
+            <a href="/set-lang/hu">🇭🇺 Magyar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-container">
+      <div class="section-header"><%= t.nav_rewards %></div>
+
+      <!-- STATS -->
+      <div class="stats-container">
+        <div class="stat-box">
+          <div class="stat-label"><%= t.total_earned %></div>
+          <div class="stat-value">€35.50</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label"><%= t.pending_rewards %></div>
+          <div class="stat-value">******</div>
+        </div>
+      </div>
+
+      <!-- REWARDS LIST -->
+      <div class="rewards-card">
+        <div class="reward-info">
+          <h3><%= t.daily_rewards %></h3>
+          <p><%= t.earned_investments %></p>
+        </div>
+        <div style="text-align: right">
+          <div class="reward-amount">€25.50</div>
+          <button class="claim-btn"><%= t.claim %></button>
+        </div>
+      </div>
+
+      <div class="rewards-card">
+        <div class="reward-info">
+          <h3><%= t.referral_bonus %></h3>
+          <p><%= t.from_referrals %></p>
+        </div>
+        <div style="text-align: right">
+          <div class="reward-amount">€10.00</div>
+          <button class="claim-btn"><%= t.claim %></button>
+        </div>
+      </div>
+
+      <div class="rewards-card">
+        <div class="reward-info">
+          <h3><%= t.staking_rewards %></h3>
+          <p><%= t.staked_crypto %></p>
+        </div>
+        <div style="text-align: right">
+          <div class="reward-amount">€0.00</div>
+          <button class="claim-btn"><%= t.claim %></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <a href="/dashboard" class="nav-item">
+        <i class="bx bx-home-alt-2"></i>
+        <%= t.nav_home %>
+      </a>
+      <a href="/invest" class="nav-item">
+        <i class="bx bx-bar-chart-alt-2"></i>
+        <%= t.nav_invest %>
+      </a>
+      <a href="#" class="nav-center-btn">
+        <i class="bx bx-transfer-alt"></i>
+      </a>
+      <a href="/rewards" class="nav-item active">
+        <i class="bx bx-dollar-circle"></i>
+        <%= t.nav_rewards %>
+      </a>
+      <a href="/dashboard" class="nav-item">
+        <i class="bx bx-wallet"></i>
+        <%= t.nav_wallet %>
+      </a>
+    </div>
+  </body>
+</html>
