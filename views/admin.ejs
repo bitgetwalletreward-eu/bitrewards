@@ -37,26 +37,26 @@
 </head>
 <body>
     <div class="header">
-        <h1>Admin Panel</h1>
-        <a href="/logout" class="logout-btn">Logout</a>
+        <h1><%= t.admin_panel %></h1>
+        <a href="/logout" class="logout-btn"><%= t.logout %></a>
     </div>
 
     <div class="container">
-        <h3>User Balances</h3>
+        <h3><%= t.user_balances %></h3>
         <table>
             <thead>
-                <tr><th>Username</th><th>Balance</th><th>Update</th></tr>
+                <tr><th><%= t.username %></th><th><%= t.balance %></th><th><%= t.update %></th></tr>
             </thead>
             <tbody>
                 <% users.forEach(u => { %>
                     <tr>
-                        <td data-label="Username"><%= u.username %></td>
-                        <td data-label="Balance">€<%= u.balance.toFixed(2) %></td>
-                        <td data-label="Update">
+                        <td data-label="<%= t.username %>"><%= u.username %></td>
+                        <td data-label="<%= t.balance %>">€<%= u.balance.toFixed(2) %></td>
+                        <td data-label="<%= t.update %>">
                             <form action="/admin/balance" method="POST">
                                 <input type="hidden" name="userId" value="<%= u._id %>">
                                 <input type="number" name="newBalance" step="0.01" value="<%= u.balance %>">
-                                <button type="submit" class="update">Set</button>
+                                <button type="submit" class="update"><%= t.set %></button>
                             </form>
                         </td>
                     </tr>
@@ -66,25 +66,25 @@
     </div>
 
     <div class="container">
-        <h3>Requests</h3>
+        <h3><%= t.requests %></h3>
         <table>
             <thead>
-                <tr><th>User</th><th>Amount</th><th>Status</th><th>Action</th></tr>
+                <tr><th><%= t.user %></th><th><%= t.amount %></th><th><%= t.status %></th><th><%= t.action %></th></tr>
             </thead>
             <tbody>
                 <% transactions.forEach(tx => { %>
                     <tr>
-                        <td data-label="User"><%= tx.userId ? tx.userId.username : 'Deleted' %></td>
-                        <td data-label="Amount">€<%= tx.amount %></td>
-                        <td data-label="Status" style="font-weight:bold;"><%= tx.status %></td>
-                        <td data-label="Action">
+                        <td data-label="<%= t.user %>"><%= tx.userId ? tx.userId.username : t.deleted %></td>
+                        <td data-label="<%= t.amount %>">€<%= tx.amount %></td>
+                        <td data-label="<%= t.status %>" style="font-weight:bold;"><%= tx.status %></td>
+                        <td data-label="<%= t.action %>">
                             <% if (tx.status === 'Pending') { %>
                                 <form action="/admin/approve" method="POST">
                                     <input type="hidden" name="txId" value="<%= tx._id %>">
                                     <button type="submit" name="action" value="approve" class="approve">✔</button>
                                     <button type="submit" name="action" value="reject" class="reject">✖</button>
                                 </form>
-                            <% } else { %> Locked <% } %>
+                            <% } else { %> <%= t.locked %> <% } %>
                         </td>
                     </tr>
                 <% }) %>

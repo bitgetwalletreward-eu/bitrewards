@@ -42,7 +42,7 @@
       .avatar {
         width: 35px;
         height: 35px;
-        background: #40e0d0;
+        background: #16504a;
         color: white;
         border-radius: 50%;
         display: flex;
@@ -59,7 +59,7 @@
 
       .top-icons i {
         font-size: 24px;
-        color: #40e0d0;
+        color: #16504a;
         cursor: pointer;
         transition: color 0.3s;
       }
@@ -92,7 +92,7 @@
 
       .hero-icon {
         font-size: 56px;
-        color: #40e0d0;
+        color: #16504a;
         margin-bottom: 15px;
       }
       .hero-title {
@@ -103,7 +103,7 @@
       }
       .hero-subtitle {
         font-size: 16px;
-        color: #40e0d0;
+        color: #16504a;
         font-weight: 600;
         margin-bottom: 15px;
       }
@@ -119,7 +119,7 @@
         border-radius: 14px;
         margin-bottom: 18px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-        border-left: 4px solid #40e0d0;
+        border-left: 4px solid #16504a;
         transition:
           transform 0.3s,
           box-shadow 0.3s;
@@ -140,7 +140,7 @@
         font-weight: 700;
       }
       .info-section h3 i {
-        color: #40e0d0;
+        color: #16504a;
         font-size: 24px;
       }
       .info-section p {
@@ -167,7 +167,7 @@
         content: "✓";
         position: absolute;
         left: 0;
-        color: #40e0d0;
+        color: #16504a;
         font-weight: bold;
       }
 
@@ -177,7 +177,7 @@
         border-radius: 14px;
         margin-bottom: 18px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-        border-left: 4px solid #40e0d0;
+        border-left: 4px solid #16504a;
       }
 
       .certifications-section h3 {
@@ -191,7 +191,7 @@
       }
 
       .certifications-section h3 i {
-        color: #40e0d0;
+        color: #16504a;
         font-size: 24px;
       }
 
@@ -206,7 +206,7 @@
         padding: 15px;
         border-radius: 12px;
         text-align: center;
-        border: 2px solid #40e0d0;
+        border: 2px solid #16504a;
         transition: all 0.3s;
         cursor: pointer;
       }
@@ -214,7 +214,7 @@
       .cert-badge:hover {
         transform: scale(1.05);
         box-shadow: 0 4px 15px rgba(64, 224, 208, 0.3);
-        background: #40e0d0;
+        background: #16504a;
       }
 
       .cert-badge:hover .cert-icon,
@@ -226,7 +226,7 @@
         font-size: 28px;
         margin-bottom: 8px;
         transition: color 0.3s;
-        color: #40e0d0;
+        color: #16504a;
       }
 
       .cert-name {
@@ -242,7 +242,7 @@
         border-radius: 14px;
         margin-bottom: 18px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-        border-left: 4px solid #40e0d0;
+        border-left: 4px solid #16504a;
       }
 
       .contact-item {
@@ -259,7 +259,7 @@
       .contact-icon {
         width: 48px;
         height: 48px;
-        background: #40e0d0;
+        background: #16504a;
         border-radius: 12px;
         display: flex;
         align-items: center;
@@ -302,7 +302,7 @@
       }
 
       .nav-item:hover {
-        color: #40e0d0;
+        color: #16504a;
       }
 
       .nav-item i {
@@ -312,7 +312,7 @@
       }
 
       .nav-center-btn {
-        background: #40e0d0;
+        background: #16504a;
         width: 45px;
         height: 45px;
         border-radius: 50%;
@@ -321,7 +321,7 @@
         justify-content: center;
         margin-top: -15px;
         box-shadow: 0 4px 15px rgba(64, 224, 208, 0.3);
-        color: #004d40;
+        color: #fff;
         transition: transform 0.3s;
       }
 
@@ -330,7 +330,7 @@
       }
 
       .highlight-text {
-        color: #40e0d0;
+        color: #16504a;
         font-weight: 600;
       }
 
@@ -344,7 +344,7 @@
         border: none;
         font-size: 24px;
         cursor: pointer;
-        color: #40e0d0;
+        color: #16504a;
         transition: color 0.3s;
       }
       .lang-btn:hover {
@@ -408,167 +408,106 @@
       <!-- HERO SECTION -->
       <div class="hero-section">
         <div class="hero-icon"><i class="bx bxs-briefcase-alt"></i></div>
-        <div class="hero-title">Bitget Wealth Management</div>
-        <div class="hero-subtitle">
-          Professional Foreign Exchange Asset Management
-        </div>
-        <div class="hero-text">
-          Secure, efficient, and competitive wealth management solutions for
-          high net worth individuals and VIP members alike.
-        </div>
+        <div class="hero-title"><%= t.platform_name %></div>
+        <div class="hero-subtitle"><%= t.platform_desc %></div>
+        <div class="hero-text"><%= t.our_platform_desc %></div>
       </div>
 
       <!-- ABOUT INFO -->
       <div class="info-section">
-        <h3><i class="bx bx-notepad"></i>Our Platform</h3>
-        <p>
-          Bitget Wealth Management is a
-          <span class="highlight-text"
-            >professional foreign exchange asset management platform</span
-          >
-          dedicated to helping clients achieve steady wealth growth through
-          carefully selected investment plans. Whether you are a high net worth
-          individual, asset management expert, or a Bitget VIP member, we offer
-          secure, efficient, and competitive wealth management solutions
-          tailored to your needs.
-        </p>
+        <h3><i class="bx bx-notepad"></i><%= t.our_platform %></h3>
+        <p><%= t.our_platform_desc %></p>
       </div>
 
       <div class="info-section">
-        <h3><i class="bx bxs-star"></i>Why Trust Us</h3>
-        <p style="margin-bottom: 15px">
-          We pride ourselves on being one of the
-          <span class="highlight-text"
-            >safest, reliable, and trusted foreign assets exchange
-            management</span
-          >
-          platforms in the world. The company has been recognized by
-          <span class="highlight-text">Forbes</span> as one of the world's most
-          trustworthy foreign exchange assets management marketplaces.
-        </p>
+        <h3><i class="bx bxs-star"></i><%= t.why_trust_us %></h3>
+        <p style="margin-bottom: 15px"><%= t.why_trust_desc %></p>
       </div>
 
       <div class="info-section">
-        <h3><i class="bx bx-shield-alt-2"></i>Security & Protection</h3>
-        <p>
-          For customers' asset payment guarantee and safety, we consult with
-          <span class="highlight-text">independent cybersecurity experts</span>
-          to continually improve the security and stability of our platform.
-        </p>
+        <h3><i class="bx bx-shield-alt-2"></i><%= t.security_protection %></h3>
+        <p><%= t.security_desc %></p>
         <ul>
-          <li>
-            Penetration testing and vulnerability assessments conducted
-            biannually on our network
-          </li>
-          <li>
-            Swift corrective action taken if potential threats are detected
-          </li>
-          <li>Advanced encryption protocols for all sensitive data</li>
-          <li>Prevention of unauthorized access or data modifications</li>
-          <li>
-            All transmitted and stored data encrypted and securely maintained
-          </li>
-          <li>Fault-tolerant storage systems for maximum reliability</li>
+          <li><%= t.security_feature_1 %></li>
+          <li><%= t.security_feature_2 %></li>
+          <li><%= t.security_feature_3 %></li>
+          <li><%= t.security_feature_4 %></li>
+          <li><%= t.security_feature_5 %></li>
+          <li><%= t.security_feature_6 %></li>
         </ul>
       </div>
 
       <!-- CERTIFICATIONS SECTION -->
       <div class="certifications-section">
-        <h3><i class="bx bxs-award"></i>Certifications & Recognition</h3>
+        <h3><i class="bx bxs-award"></i><%= t.certifications_recognition %></h3>
         <div class="cert-grid">
           <div class="cert-badge" title="ISO 27001 Certification">
             <div class="cert-icon"><i class="bx bxs-check-shield"></i></div>
-            <div class="cert-name">ISO 27001</div>
+            <div class="cert-name"><%= t.iso_27001 %></div>
           </div>
           <div class="cert-badge" title="Forbes Recognition">
             <div class="cert-icon"><i class="bx bxs-medal"></i></div>
-            <div class="cert-name">Forbes</div>
+            <div class="cert-name"><%= t.forbes %></div>
           </div>
           <div class="cert-badge" title="SOC 2 Compliant">
             <div class="cert-icon"><i class="bx bxs-check-circle"></i></div>
-            <div class="cert-name">SOC 2</div>
+            <div class="cert-name"><%= t.soc_2 %></div>
           </div>
           <div class="cert-badge" title="PCI DSS Certified">
             <div class="cert-icon"><i class="bx bxs-shield"></i></div>
-            <div class="cert-name">PCI DSS</div>
+            <div class="cert-name"><%= t.pci_dss %></div>
           </div>
           <div class="cert-badge" title="GDPR Compliant">
             <div class="cert-icon"><i class="bx bxs-lock"></i></div>
-            <div class="cert-name">GDPR</div>
+            <div class="cert-name"><%= t.gdpr %></div>
           </div>
           <div class="cert-badge" title="FCA Regulated">
             <div class="cert-icon"><i class="bx bxs-buildings"></i></div>
-            <div class="cert-name">FCA</div>
+            <div class="cert-name"><%= t.fca %></div>
           </div>
           <div class="cert-badge" title="MiCA Compliant">
             <div class="cert-icon"><i class="bx bxs-check-square"></i></div>
-            <div class="cert-name">MiCA</div>
+            <div class="cert-name"><%= t.mica %></div>
           </div>
         </div>
       </div>
 
       <!-- EU HEADQUARTERS SECTION -->
       <div class="info-section">
-        <h3>
-          <i class="bx bxs-building"></i>EU Headquarters - Vienna, Austria
-        </h3>
-        <p style="margin-bottom: 12px">
-          Bitget confirms that
-          <span class="highlight-text"
-            >Vienna will serve as its planned EU headquarters</span
-          >
-          supporting transparent regulatory engagement and strong internal
-          controls as the firm prepares for MiCA implementation.
-        </p>
-        <p style="margin-bottom: 12px">
-          The Austrian hub is expected to function as an
-          <span class="highlight-text"
-            >operational center for compliance, governance, and supervisory
-            coordination</span
-          >
-          across the European Economic Area (EEA).
-        </p>
-        <p>
-          Bitget said the headquarters will meet with local requirements in
-          markets where services may be offered, reinforcing its focus on
-          <span class="highlight-text">regulated expansion</span>.
-        </p>
+        <h3><i class="bx bxs-building"></i><%= t.eu_headquarters %></h3>
+        <p style="margin-bottom: 12px"><%= t.vienna_desc %></p>
+        <p style="margin-bottom: 12px"><%= t.vienna_ops %></p>
+        <p><%= t.vienna_markets %></p>
       </div>
 
       <!-- TRANSPARENCY & OPERATIONS SECTION -->
       <div class="info-section">
-        <h3><i class="bx bx-check-double"></i>Transparency & Operations</h3>
-        <p>
-          Our operations are
-          <span class="highlight-text"
-            >transparent and continually evolve to meet global compliance
-            standards</span
-          >
-          in cryptocurrency. We work closely with our agents and partners to
-          keep our information accurate and our platform secure. Every service
-          and product we offer reflects Bitget's industry-leading security and
-          reliability.
-        </p>
+        <h3>
+          <i class="bx bx-check-double"></i><%= t.transparency_operations %>
+        </h3>
+        <p><%= t.transparency_desc %></p>
       </div>
 
       <!-- COMPLIANCE MANAGEMENT SECTION -->
       <div class="info-section">
-        <h3><i class="bx bx-task"></i>Compliance Management</h3>
-        <p style="margin-bottom: 12px">
-          Our dedicated team of experts ensures that we follow
-          <span class="highlight-text"
-            >strict compliance standards and protocols</span
-          >. Our team follows a comprehensive compliance management framework,
-          which is overseen by senior management, to identify, assess, execute
-          and evaluate effectively.
+        <h3><i class="bx bx-task"></i><%= t.compliance_management %></h3>
+        <p style="margin-bottom: 12px"><%= t.compliance_desc %></p>
+        <p style="margin-bottom: 12px; font-weight: 600; color: #16504a">
+          <%= t.risk_identification %>
         </p>
-        <p style="margin-bottom: 12px; font-weight: 600; color: #40e0d0">
-          Risk Identification & Assessment
+        <p style="margin-bottom: 12px"><%= t.risk_examination %></p>
+        <p
+          style="
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #1a1a1a;
+            font-weight: 600;
+          "
+        >
+          <%= t.external_risks %>
         </p>
-        <p style="margin-bottom: 12px">
-          It is our responsibility to examine and identify any risks to or
-          regarding our platform, and follow through with any necessary
-          remediation.
+        <p style="margin-bottom: 12px; margin-left: 10px; font-size: 13px">
+          <%= t.external_risks_desc %>
         </p>
         <p
           style="
@@ -578,126 +517,48 @@
             font-weight: 600;
           "
         >
-          External Risks:
+          <%= t.internal_risks %>
         </p>
         <p style="margin-bottom: 12px; margin-left: 10px; font-size: 13px">
-          Those that may arise from outside circumstances, such as incorrect
-          information published by third-party advertisements from Bitget
-          affiliates.
+          <%= t.internal_risks_desc %>
         </p>
-        <p
-          style="
-            margin-bottom: 8px;
-            font-size: 13px;
-            color: #1a1a1a;
-            font-weight: 600;
-          "
-        >
-          Internal Risks:
-        </p>
-        <p style="margin-bottom: 12px; margin-left: 10px; font-size: 13px">
-          Those that may arise from within our organization, such as
-          unauthorized, inappropriate, illegal, or unethical actions taken by
-          our employees.
-        </p>
-        <p>
-          In conjunction with our assessments and annual compliance reviews, we
-          work with
-          <span class="highlight-text"
-            >local regulators to ensure our compliance standards adhere to
-            regional requirements</span
-          >.
-        </p>
+        <p><%= t.local_regulators %></p>
       </div>
 
       <!-- IDENTITY VERIFICATION SECTION -->
       <div class="info-section">
-        <h3><i class="bx bx-id-card"></i>Electronic Identity Verification</h3>
-        <p style="margin-bottom: 12px">
-          We employ
-          <span class="highlight-text"
-            >extensive electronic identity verification procedures</span
-          >
-          to protect our platform and mitigate risks associated with fraud and
-          illicit behavior.
-        </p>
-        <p style="margin-bottom: 12px">
-          Our stringent
-          <span class="highlight-text"
-            >sanctions and anti-money laundering policies</span
-          >
-          ensure compliance with all relevant jurisdictions, effectively
-          preventing counterfeiting and other criminal activities.
-        </p>
-        <p>
-          Efficiency is key in our Customer Due Diligence (CDD) process. To
-          streamline identity verification without compromising compliance, we
-          utilize
-          <span class="highlight-text"
-            >advanced technology such as facial recognition and automated
-            cross-matching</span
-          >
-          between provided identification and live selfies. This significantly
-          shortens the identity verification process on Bitget, enhancing
-          overall user experience and security.
-        </p>
+        <h3>
+          <i class="bx bx-id-card"></i><%= t.electronic_identity_verification %>
+        </h3>
+        <p style="margin-bottom: 12px"><%= t.electronic_identity_desc %></p>
+        <p style="margin-bottom: 12px"><%= t.sanctions_aml %></p>
+        <p><%= t.cdd_process %></p>
       </div>
 
       <!-- BLOCKCHAIN & ANALYTICS SECTION -->
       <div class="info-section">
         <h3>
-          <i class="bx bxs-network-chart"></i>Blockchain and Payment Analytics
+          <i class="bx bxs-network-chart"></i><%= t.blockchain_analytics %>
         </h3>
-        <p style="margin-bottom: 12px">
-          <span class="highlight-text"
-            >External blockchain analytical tools</span
-          >
-          are deployed to closely monitor transactions on our platform and
-          reduce the risk of fraudulent activities and the appearance of
-          high-risk clients. Due to the immutability and transparency of public
-          blockchains, we are able to thoroughly examine transactions conducted
-          on our platform.
-        </p>
-        <p style="margin-bottom: 12px; font-weight: 600; color: #40e0d0">
-          High-Risk Client Categories
+        <p style="margin-bottom: 12px"><%= t.blockchain_tools %></p>
+        <p style="margin-bottom: 12px; font-weight: 600; color: #16504a">
+          <%= t.high_risk_clients %>
         </p>
         <p style="margin-bottom: 8px; font-size: 13px">
-          High-risk clients include, but are not limited to:
+          <%= t.high_risk_desc %>
         </p>
         <ul>
-          <li>Clients from certain countries/regions</li>
-          <li>Government officials</li>
-          <li>
-            Clients from certain industries (e.g., cash-intensive businesses)
-          </li>
+          <li><%= t.high_risk_countries %></li>
+          <li><%= t.high_risk_officials %></li>
+          <li><%= t.high_risk_industries %></li>
         </ul>
-        <p style="margin-top: 12px">
-          Our Risk and Governance team assesses high-risk clients and takes
-          appropriate measures, such as
-          <span class="highlight-text"
-            >asset seizures or more frequent reviews and audits</span
-          >, based on the circumstances. This helps ensure platform security and
-          successful profit allocation to our users while maintaining regulatory
-          compliance.
-        </p>
+        <p style="margin-top: 12px"><%= t.risk_governance %></p>
       </div>
 
       <div class="info-section">
-        <h3><i class="bx bx-info-circle"></i>Important Risk Information</h3>
-        <p style="margin-bottom: 15px">
-          <span class="highlight-text"
-            >Assets will only be credited after confirmation of user's first
-            deposit or specified settlement date.</span
-          >
-          Please carefully evaluate your asset utilization needs before
-          investing.
-        </p>
-        <p style="margin-bottom: 15px">
-          Bitget Wealth Management aims to be a
-          <span class="highlight-text">low-risk product</span> by rigorously
-          selecting providers and controlling transaction risks to protect your
-          assets.
-        </p>
+        <h3><i class="bx bx-info-circle"></i><%= t.important_risk_info %></h3>
+        <p style="margin-bottom: 15px"><%= t.important_risk_desc %></p>
+        <p style="margin-bottom: 15px"><%= t.low_risk_product %></p>
       </div>
 
       <!-- CONTACT SECTION -->
@@ -712,12 +573,13 @@
             gap: 12px;
           "
         >
-          <i class="bx bxs-phone" style="color: #14a798"></i> Get in Touch
+          <i class="bx bxs-phone" style="color: #14a798"></i> <%= t.get_in_touch
+          %>
         </h3>
         <div class="contact-item">
           <div class="contact-icon"><i class="bx bx-envelope"></i></div>
           <div class="contact-text">
-            <h4>Email</h4>
+            <h4><%= t.email %></h4>
             <a href="mailto:askforas9stance@gmail.com"
               ><p>support@bitgetwealth.com</p></a
             >
@@ -726,14 +588,14 @@
         <div class="contact-item">
           <div class="contact-icon"><i class="bx bx-phone"></i></div>
           <div class="contact-text">
-            <h4>Phone</h4>
+            <h4><%= t.phone %></h4>
             <a href="https://t.me/BITGETACCOUNTANT"><p>+1 (888) 200-5000</p></a>
           </div>
         </div>
         <div class="contact-item">
           <div class="contact-icon"><i class="bx bx-globe"></i></div>
           <div class="contact-text">
-            <h4>Website</h4>
+            <h4><%= t.website %></h4>
             <a href="https://www.bltgetapp.com" target="_blank"
               ><p>www.bltgetapp.com</p></a
             >
@@ -742,7 +604,7 @@
         <div class="contact-item">
           <div class="contact-icon"><i class="bx bx-map"></i></div>
           <div class="contact-text">
-            <h4>Address</h4>
+            <h4><%= t.address %></h4>
             <p>
               Bitget EU Headquaters <br />
               Vienna, Austria,
