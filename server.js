@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -6,17 +8,32 @@ const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs");
 const path = require("path");
 const fs = require("fs");
+
 const app = express();
 
-// --- CONFIGURATION ---
-const TELEGRAM_USERNAME = "YOUR_TELEGRAM_ID";
+// =============================
+// 🔐 ENVIRONMENT VARIABLES
+// =============================
+const {
+  MONGODB_URI,
+  SESSION_SECRET,
+  TELEGRAM_USERNAME,
+  ADMIN_USER,
+  ADMIN_PASS,
+  NODE_ENV,
+  PORT,
+} = process.env;
 
-// Environment variables for Render deployment
-const MONGO_URI =
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/bitrewards";
-const PORT = process.env.PORT || 3000;
+if (!MONGODB_URI || !SESSION_SECRET) {
+  console.error("❌ Missing required environment variables.");
+  process.exit(1);
+}
 
-// --- LOAD LANGUAGES ---
+const APP_PORT = PORT || 3000;
+
+// =============================
+// 🌍 LOAD LANGUAGES
+// =============================
 const languages = {
   en: JSON.parse(fs.readFileSync("./locales/en.json", "utf8")),
   cs: JSON.parse(fs.readFileSync("./locales/cs.json", "utf8")),
@@ -24,20 +41,28 @@ const languages = {
   hu: JSON.parse(fs.readFileSync("./locales/hu.json", "utf8")),
 };
 
-// --- MIDDLEWARE ---
+// =============================
+// 🧩 MIDDLEWARE
+// =============================
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.set("view engine", "ejs");
+
 app.use(
   session({
-    secret: "secret-key-123",
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: NODE_ENV === "production",
+      httpOnly: true,
+      sameSite: "lax",
+    },
   }),
 );
 
-// --- LANGUAGE MIDDLEWARE ---
+// Language Middleware
 app.use((req, res, next) => {
   const langCode = req.cookies.lang || "en";
   res.locals.lang = langCode;
@@ -45,23 +70,30 @@ app.use((req, res, next) => {
   next();
 });
 
-// expose telegram username to all views for support link
+// Telegram username available in all views
 app.use((req, res, next) => {
   res.locals.telegramUser = TELEGRAM_USERNAME;
   next();
 });
 
-// --- DATABASE CONNECTION ---
+// =============================
+// 🗄 DATABASE CONNECTION
+// =============================
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGODB_URI)
   .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.log("❌ DB Error:", err));
+  .catch((err) => {
+    console.error("❌ Database Connection Error:", err);
+    process.exit(1);
+  });
 
-// --- MODELS ---
+// =============================
+// 📦 MODELS
+// =============================
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  balance: { type: Number, default: 0.0 },
+  balance: { type: Number, default: 0 },
   isAdmin: { type: Boolean, default: false },
 });
 
@@ -79,61 +111,79 @@ const transactionSchema = new mongoose.Schema({
 const User = mongoose.model("User", userSchema);
 const Transaction = mongoose.model("Transaction", transactionSchema);
 
-// --- SEED ADMIN ---
+// =============================
+// 🔑 SAFE ADMIN SEED (ONLY IF PROVIDED)
+// =============================
 async function seedAdmin() {
-  const adminExists = await User.findOne({ username: "admin" });
+  if (!ADMIN_USER || !ADMIN_PASS) return;
+
+  const adminExists = await User.findOne({ username: ADMIN_USER });
   if (!adminExists) {
-    const hashedPassword = await bcrypt.hash("admin123", 10);
+    const hashedPassword = await bcrypt.hash(ADMIN_PASS, 12);
     await User.create({
-      username: "admin",
+      username: ADMIN_USER,
       password: hashedPassword,
       isAdmin: true,
       balance: 0,
     });
-    console.log("Admin Account Created: admin / admin123");
+    console.log("✅ Admin account created from ENV");
   }
 }
 seedAdmin();
 
-// --- ROUTES ---
+// =============================
+// 🔐 AUTH MIDDLEWARE
+// =============================
+const requireLogin = (req, res, next) => {
+  if (!req.session.userId) return res.redirect("/login");
+  next();
+};
 
-// Language Switcher
+const requireAdmin = async (req, res, next) => {
+  if (!req.session.userId) return res.redirect("/login");
+  const user = await User.findById(req.session.userId);
+  if (!user || !user.isAdmin) return res.redirect("/dashboard");
+  next();
+};
+
+// =============================
+// 🌐 ROUTES
+// =============================
+app.get("/", (req, res) => res.redirect("/login"));
+
 app.get("/set-lang/:code", (req, res) => {
   const code = req.params.code;
   if (["en", "cs", "hr", "hu"].includes(code)) {
     res.cookie("lang", code, { maxAge: 900000000, path: "/" });
   }
-  // Get the referring URL, fallback to dashboard
-  const referrer = req.get("referer") || "/dashboard";
-  res.redirect(referrer);
+  res.redirect(req.get("referer") || "/dashboard");
 });
 
-// Auth Routes
-app.get("/", (req, res) => res.redirect("/login"));
-
+// Auth
 app.get("/login", (req, res) => res.render("login"));
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username });
+
   if (user && (await bcrypt.compare(password, user.password))) {
     req.session.userId = user._id;
     return user.isAdmin ? res.redirect("/admin") : res.redirect("/dashboard");
   }
+
   res.render("login", { error: "Invalid credentials" });
 });
 
 app.get("/register", (req, res) => res.render("register"));
 
-// Auto-Login after Sign Up
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 12);
     const newUser = await User.create({ username, password: hashedPassword });
     req.session.userId = newUser._id;
     res.redirect("/dashboard");
-  } catch (e) {
+  } catch {
     res.render("register", { error: "Username taken" });
   }
 });
@@ -143,13 +193,7 @@ app.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-// Middleware: Require Login
-const requireLogin = (req, res, next) => {
-  if (!req.session.userId) return res.redirect("/login");
-  next();
-};
-
-// Wallet Dashboard
+// Dashboard
 app.get("/dashboard", requireLogin, async (req, res) => {
   const user = await User.findById(req.session.userId);
   const transactions = await Transaction.find({ userId: user._id }).sort({
@@ -158,81 +202,48 @@ app.get("/dashboard", requireLogin, async (req, res) => {
   res.render("dashboard", { user, transactions });
 });
 
-// Invest Page
-app.get("/invest", requireLogin, async (req, res) => {
-  const user = await User.findById(req.session.userId);
-  res.render("invest", { user });
-});
-
-// Rewards Page
-app.get("/rewards", requireLogin, async (req, res) => {
-  const user = await User.findById(req.session.userId);
-  res.render("rewards", { user });
-});
-
-// About Us Page
-app.get("/about-us", requireLogin, async (req, res) => {
-  const user = await User.findById(req.session.userId);
-  res.render("about-us", { user });
-});
-
-// Withdrawal Process
+// Withdraw
 app.get("/withdraw", requireLogin, (req, res) => res.render("withdraw"));
 
-// --- UPDATED WITHDRAWAL ROUTE (7.5% VAT) ---
 app.post("/withdraw/confirm", requireLogin, async (req, res) => {
   try {
     const { amount, method, details } = req.body;
     const user = await User.findById(req.session.userId);
 
-    if (!user) return res.redirect("/login");
     if (!amount || isNaN(amount)) return res.send("Invalid Amount");
 
-    // Check Balance
-    if (parseFloat(amount) > user.balance) {
+    const parsedAmount = parseFloat(amount);
+
+    if (parsedAmount > user.balance) {
       return res.send(
-        `Insufficient funds. Your Balance: €${user.balance.toFixed(2)}`,
+        `Insufficient funds. Balance: €${user.balance.toFixed(2)}`,
       );
     }
 
-    // --- CALCULATE 7.5% VAT ---
-    const vat = (parseFloat(amount) * 0.075).toFixed(2);
+    const vat = parseFloat((parsedAmount * 0.075).toFixed(2));
 
-    const newTx = await Transaction.create({
+    const tx = await Transaction.create({
       userId: user._id,
-      amount: parseFloat(amount),
+      amount: parsedAmount,
       vatFee: vat,
-      method: method,
-      details: details,
-      status: "Pending",
+      method,
+      details,
     });
 
-    console.log(`Withdrawal Success: ${newTx._id}`);
-    res.redirect(`/invoice/${newTx._id}`);
+    res.redirect(`/invoice/${tx._id}`);
   } catch (error) {
-    console.error("Withdrawal Error:", error);
-    res.send("An error occurred during withdrawal. Please try again.");
+    console.error(error);
+    res.send("Withdrawal error. Try again.");
   }
 });
 
 app.get("/invoice/:id", requireLogin, async (req, res) => {
-  try {
-    const tx = await Transaction.findById(req.params.id).populate("userId");
-    if (!tx) return res.redirect("/dashboard");
-    res.render("invoice", { tx, telegramUser: TELEGRAM_USERNAME });
-  } catch (err) {
-    res.redirect("/dashboard");
-  }
+  const tx = await Transaction.findById(req.params.id).populate("userId");
+  if (!tx) return res.redirect("/dashboard");
+  res.render("invoice", { tx });
 });
 
-// Admin Routes
-const requireAdmin = async (req, res, next) => {
-  if (!req.session.userId) return res.redirect("/login");
-  const user = await User.findById(req.session.userId);
-  if (!user || !user.isAdmin) return res.redirect("/dashboard");
-  next();
-};
-
+// Admin
 app.get("/admin", requireAdmin, async (req, res) => {
   const users = await User.find({ isAdmin: false });
   const transactions = await Transaction.find()
@@ -241,34 +252,9 @@ app.get("/admin", requireAdmin, async (req, res) => {
   res.render("admin", { users, transactions });
 });
 
-app.post("/admin/balance", requireAdmin, async (req, res) => {
-  await User.findByIdAndUpdate(req.body.userId, {
-    balance: req.body.newBalance,
-  });
-  res.redirect("/admin");
-});
-
-app.post("/admin/approve", requireAdmin, async (req, res) => {
-  const { txId, action } = req.body;
-  const tx = await Transaction.findById(txId);
-
-  if (action === "approve") {
-    const user = await User.findById(tx.userId);
-    if (user.balance >= tx.amount) {
-      user.balance -= tx.amount;
-      await user.save();
-      tx.status = "Approved";
-    } else {
-      tx.status = "Failed (Insufficient Funds)";
-    }
-  } else {
-    tx.status = "Rejected";
-  }
-
-  await tx.save();
-  res.redirect("/admin");
-});
-
-app.listen(PORT, () =>
-  console.log(`🚀 Server running on http://localhost:${PORT}`),
+// =============================
+// 🚀 START SERVER
+// =============================
+app.listen(APP_PORT, () =>
+  console.log(`🚀 Server running on port ${APP_PORT}`),
 );
